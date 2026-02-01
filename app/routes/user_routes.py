@@ -1,8 +1,8 @@
 from app.extensions import db
 from app.models.user import User
-from flask import request, blueprints, jsonify
+from flask import request, Blueprint, jsonify
 
-user_bp = blueprints("user", __name__)
+user_bp = Blueprint("user", __name__)
 
 
 @user_bp.route("/register", method=["POST"])
