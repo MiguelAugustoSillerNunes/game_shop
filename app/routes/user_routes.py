@@ -8,15 +8,15 @@ user_bp = Blueprint("user", __name__)
 @user_bp.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
-
+    
     name = data.get("name")
     email = data.get("email")
     password = data.get("password")
 
-    if not name or email or password:
+    if not name or not email or not password:
         return jsonify({"erro": "Algum dado faltando"}), 400
 
-    email_existe = User.query.filter(email=email).first()
+    email_existe = User.query.filter_by(email=email).first()
 
     if email_existe:
         return jsonify({"erro": "Email já cadastrado"}), 400
@@ -28,6 +28,6 @@ def register():
     )
 
     db.session.add(novo_user)
-    db.commit()
+    db.session.commit()
 
     return jsonify({"mensagem": "User criado com sucesso"}), 200
