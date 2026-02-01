@@ -5,7 +5,7 @@ from flask import request, Blueprint, jsonify
 user_bp = Blueprint("user", __name__)
 
 
-@user_bp.route("/register", method=["POST"])
+@user_bp.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
 
