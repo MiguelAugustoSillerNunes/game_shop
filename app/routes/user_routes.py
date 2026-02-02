@@ -46,7 +46,7 @@ def login():
     user = User.query.filter_by(email=email).first()
 
     if not user:
-        return jsonify({"erro": "Email não encontrado"}), 401    
+        return jsonify({"erro": "Email não encontrado"}), 401
 
     if not user.check_pass(password):
         return jsonify({"erro": "Senha incorreta"}), 401
