@@ -51,4 +51,4 @@ def login():
     if not user.check_pass(password):
         return jsonify({"erro": "Senha incorreta"}), 401
 
-    return jsonify({"mensagem": f"Usuaria autentica - Ola {user.name}"}), 200
+    return jsonify({"mensagem": f"User autenticado - Ola {user.name}"}), 200
