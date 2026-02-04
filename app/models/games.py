@@ -8,7 +8,9 @@ Valor Padrão e ativo = Y e de preço = 0
 class Games(db.Model):
     __tablename__ = "games"
 
-    id = db.Column(db.Interger, primary_key=False)
+    id = db.Column(db.Integer, primary_key=True)
+
+    id_api = db.Column(db.Integer, nullable=False, unique=True)
 
     name = db.Column(db.String(100), nullable=False)
 
