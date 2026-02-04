@@ -10,7 +10,7 @@ def register():
     data = request.get_json()
 
     name = data.get("name")
-    email = data.get("email")
+    email = data.get("email").lower()
     password = data.get("password")
 
     if not name or not email or not password:
