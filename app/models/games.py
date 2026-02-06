@@ -23,3 +23,15 @@ class Games(db.Model):
     console = db.Column(db.String(15), nullable=False)
 
     activated = db.Column(db.String(1), nullable=False, server_default=db.text("'Y'"))
+
+    def to_dict(self):
+        resultado = {
+            "id_api": self.id_api,
+            "name": self.name,
+            "version": self.version,
+            "price": self.price,
+            "description": self.description,
+            "console": self.console,
+            "activated": self.activated
+        }
+        return resultado
