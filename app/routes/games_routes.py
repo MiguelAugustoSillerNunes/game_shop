@@ -82,33 +82,20 @@ def games_list():
         games = Games.query.filter(Games.name.ilike(f"%{game_name}%"), Games.activated=="Y").all()
 
         for game in games:
-            resultado.append({
-                "id_api": game.id_api,
-                "name": game.name,
-                "version": game.version,
-                "price": float(game.price),
-                "description": game.description,
-                "console": game.console,
-                "activated": game.activated
-            })
+            resultado.append(
+                game.to_dict()
+                )
     else:
         return jsonify({"erro": "Informe nome ou id"}), 400
 
     if not games:
         return jsonify({"erro": "Jogo não existe"}), 404
-
+    # resultado é True se o filtro for por nome e trouxer uma lista
     if resultado:
         return jsonify(resultado), 200
     else:
-        return jsonify({
-            "id_api": games.id_api,
-            "name": games.name,
-            "version": games.version,
-            "price": float(games.price),
-            "description": games.description,
-            "console": games.console,
-            "activated": games.activated
-                        }), 200
+
+        return jsonify(games.to_dict()), 200
 
 
 @games_bp.route("/game_all", methods=["GET"])
@@ -118,14 +105,6 @@ def game_all():
     result = []
 
     for games in games_all:
-        result.append({
-            "id_api": games.id_api,
-            "name": games.name,
-            "version": games.version,
-            "price": float(games.price),
-            "description": games.description,
-            "console": games.console,
-            "activated": games.activated
-        })
+        result.append(games.to_dict())
 
     return jsonify(result), 200
