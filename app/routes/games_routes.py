@@ -37,7 +37,7 @@ def games_register():
             activated=activated
     )
 
-    db.session.add(novo_game)   
+    db.session.add(novo_game)
     db.session.commit()
 
     return jsonify({"mensagem": f"Game cadastrado com sucesso {novo_game.name}"}), 200
@@ -45,6 +45,7 @@ def games_register():
 
 @games_bp.route("/game_update_status", methods=["POST"])
 def game_delete():
+    # Muda o estado do jogo na loja para Y = ativado ou N = desativado
     data = request.get_json()
 
     id = data.get("id")
@@ -67,3 +68,64 @@ def game_delete():
         return jsonify({"mensagem": f"Jogo ativado com sucesso {game_id.name}"}), 200
     else:
         return jsonify({"mensagem": f"Jogo desativado com sucesso {game_id.name}"}), 200
+
+
+@games_bp.route("/games_listed", methods=["GET"])
+def games_list():
+    # filtra jogo por id ou por nome (nome retorna lista)
+    game_id = request.args.get("id")
+    game_name = request.args.get("name")
+    resultado = []
+    if game_id:
+        games = Games.query.filter_by(id=int(game_id), activated="Y").first()
+    elif game_name:
+        games = Games.query.filter(Games.name.ilike(f"%{game_name}%"), Games.activated=="Y").all()
+
+        for game in games:
+            resultado.append({
+                "id_api": game.id_api,
+                "name": game.name,
+                "version": game.version,
+                "price": float(game.price),
+                "description": game.description,
+                "console": game.console,
+                "activated": game.activated
+            })
+    else:
+        return jsonify({"erro": "Informe nome ou id"}), 400
+
+    if not games:
+        return jsonify({"erro": "Jogo não existe"}), 404
+
+    if resultado:
+        return jsonify(resultado), 200
+    else:
+        return jsonify({
+            "id_api": games.id_api,
+            "name": games.name,
+            "version": games.version,
+            "price": float(games.price),
+            "description": games.description,
+            "console": games.console,
+            "activated": games.activated
+                        }), 200
+
+
+@games_bp.route("/game_all", methods=["GET"])
+def game_all():
+    # retorna todos os jogos
+    games_all = Games.query.filter_by(activated="Y").all()
+    result = []
+
+    for games in games_all:
+        result.append({
+            "id_api": games.id_api,
+            "name": games.name,
+            "version": games.version,
+            "price": float(games.price),
+            "description": games.description,
+            "console": games.console,
+            "activated": games.activated
+        })
+
+    return jsonify(result), 200
