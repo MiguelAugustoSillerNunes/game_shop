@@ -8,6 +8,7 @@ from .routes.games_routes import games_bp
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    app.json.sort_keys = False
     app.register_blueprint(user_bp)
     app.register_blueprint(games_bp)
     db.init_app(app)
