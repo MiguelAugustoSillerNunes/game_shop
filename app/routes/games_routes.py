@@ -43,7 +43,7 @@ def games_register():
     return jsonify({"mensagem": f"Game cadastrado com sucesso {novo_game.name}"}), 200
 
 
-@games_bp.route("/game_update_status", methods=["POST"])
+@games_bp.route("/games_update_status", methods=["POST"])
 def game_delete():
     # Muda o estado do jogo na loja para Y = ativado ou N = desativado
     data = request.get_json()
@@ -98,7 +98,7 @@ def games_list():
         return jsonify(games.to_dict()), 200
 
 
-@games_bp.route("/game_all", methods=["GET"])
+@games_bp.route("/games_all", methods=["GET"])
 def game_all():
     # retorna todos os jogos
     games_all = Games.query.filter_by(activated="Y").all()
