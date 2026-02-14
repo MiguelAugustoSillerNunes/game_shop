@@ -27,3 +27,13 @@ class User(db.Model):
             password_digitada.encode('utf-8'),
             self.password.encode('utf-8')
         )
+
+    def to_dict(self):
+        resultado = {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "password": self.password,
+            "create_date": self.create_date
+        }
+        return resultado
